@@ -122,7 +122,7 @@ r2 = f2 1 2
 -- TODO: Define the function sumOfSquares:
 -- It should take two arguments and return the sum of their squares.
 sumOfSquares :: Int -> Int -> Int
-sumOfSquares = error "TODO"
+sumOfSquares a b = a * a + b * b
 
 -- This is a test which is executed by the test framework.
 sumOfSquaresSpec :: Spec
@@ -165,7 +165,7 @@ f7 Red = True
 -- And this is a partial function. Partial in that it is not defined for all values of its parameter type (also called domain).
 -- This function crashes if applied to `Red`.
 -- Partial functions are bad, because they can lead to bugs.
--- Try: `f6 Red`
+-- Try: `f8 Red`
 f8 :: Color -> Char
 f8 Green = 'g'
 f8 Blue  = 'b'
@@ -174,7 +174,9 @@ f8 Blue  = 'b'
 -- TODO: Define the function nextColor:
 -- Next of red is green, next of green is blue, next of blue is red again.
 nextColor :: Color -> Color
-nextColor = error "TODO"
+nextColor Red   = Green
+nextColor Green = Blue
+nextColor Blue  = Red
 
 -- This is a test which is executed by the test framework.
 nextColorSpec :: Spec
@@ -212,6 +214,11 @@ f10 c = f c
 
 -- TODO: Write the type of the given function `f11`:
 --- f11 :: TODO
+-- First argument `a` gets passed to f10. Its first argument is Color.
+-- f10 returns an int.
+-- The next operation is a less-than, so the second argumennt `c` must also be an int.
+-- less-than returns an int, which is the return value of f11
+f11 :: Color -> Int -> Bool
 f11 a c = f10 a > c
 
 
