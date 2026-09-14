@@ -90,8 +90,11 @@ c2 = Blue
 
 -- TODO: Write your own enumeration type for weekdays.
 -- Make sure that the values can be printed and compared.
+data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday deriving (Show, Eq)
 
 -- TODO: Define a binding named `bestDay` with your value for Sunday. Give the binding a type signature.
+bestDay :: Weekday
+bestDay = Sunday
 
 -------------------------------------------------------------------------------
 -- 4. Basic syntax
