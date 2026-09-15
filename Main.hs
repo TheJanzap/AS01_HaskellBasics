@@ -495,6 +495,10 @@ res = add 1 2 -- actually means ((add 1) 2)
 
 -- TODO: What is the type of `pa1`?
 -- pa1 :: TODO
+-- f is a function that takes a `Bool`, two `Int`s and returns a `Bool`.
+-- f is called with a `Bool` and a single `Int`, meaning the second `Int` needs to be provided by the argument of `pa1`.
+-- Since f returns a `Bool`, `pa1` does as well.   
+pa1 :: Int -> Bool
 pa1 = f True 1
   where f :: Bool -> Int -> Int -> Bool
         f _ _ _ = True
