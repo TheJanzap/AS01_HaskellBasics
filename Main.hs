@@ -388,7 +388,8 @@ e2 = firstE Nil -- Crashes!
 -- TODO: Define the function isEmpty:
 -- It returns whether the given list is empty.
 isEmpty :: List a -> Bool
-isEmpty = error "TODO"
+isEmpty Nil = True
+isEmpty (Node _ _) = False
 
 isEmptySpec :: Spec
 isEmptySpec =
@@ -443,8 +444,9 @@ getFirstTwo _         = []
 -- TODO: Define the function firstAndThird:
 -- It returns in a pair the first and third element of a list.
 -- Is a total (in contrast to partial) implementation possible?
+-- No, not with this type signature. You could wrap the tuple in `Maybe` and return `Nothing` if there are less than 3 elements in the list.
 firstAndThird :: [a] -> (a,a)
-firstAndThird = error "TODO"
+firstAndThird (a1:_:a3:_) = (a1, a3)
 
 firstAndThirdSpec :: Spec
 firstAndThirdSpec =
