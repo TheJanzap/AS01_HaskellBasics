@@ -249,6 +249,10 @@ price (Power False) = 50
 
 -- TODO: Write the type of the given definition `s2`.
 -- s2 :: TODO
+-- First argument `a` gets passed to `price`, so `a` must be a `Part`.
+-- The second argument `b` is a `price` variant with `Power`, so `b` must be a bool.
+-- Since the price constructor always returns `Int`, the addition adds two `Int`s and the return value is also `Int`.
+s2:: Part -> Bool -> Int      
 s2 a b = price a + price (Power b)
 
 
@@ -266,7 +270,7 @@ ip = IP 5 4
 -- TODO: Define the function pairProduct:
 -- It returns the product of its components.
 pairProduct :: IPair -> Int
-pairProduct = error "TODO"
+pairProduct (IP i1 i2) = i1 * i2 
 
 pairProductSpec :: Spec
 pairProductSpec =
@@ -299,6 +303,10 @@ p2 = P (Power True) Red
 -- Try: `first p2`
 -- This function is polymorphic, meaning it works for pairs with different component types.
 -- Pro: Can you give a wrong implementation that terminates?
+-- Unsure about the questions phrasing. But you could write `first (P _ y) = y` to return the second element
+-- instead of the first. But that is prevented by the type checker, as `y` is of type `b`, while the function
+-- must return an `a`. We could also assign `error` or `undefined`, but I don't think that this is what you're
+-- asking for.
 first :: Pair a b -> a
 first (P x _) = x
 
@@ -321,6 +329,10 @@ p6 = snd (True,Red)
 
 -- TODO: What is the type of the given definition `p7`?
 -- p7 :: TODO
+-- The inner tuple is of type `(Color, Char)` and because `fst` returns the first element, it returns `Color`.
+-- The outer tuple now contains values of type `(Bool, Color)`, and `snd` returns the second element.
+-- There are no parameters, so the function simply returns `Color`.
+p7 :: Color
 p7 = snd (True, fst (Red, 'X'))
 
 
@@ -337,7 +349,8 @@ name = fstName (MkLecturer "Peter" "Meier")
 
 -- TODO: What is the type of the generated function `sndName`?
 -- You can check your answer with `:t sndName` in the repl.
-
+-- It takes in a `Lecturer` and returns its second name, which is a `String`
+-- sndName :: Lecturer -> String
 
 -------------------------------------------------------------------------------
 -- 6. Lists
