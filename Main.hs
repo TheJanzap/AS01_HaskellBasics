@@ -644,7 +644,8 @@ o6 = 3 `mul` 4
 -- It takes a list of Ints, squares every Int, and keeps only those values which are even.
 -- Use a `^` operator section to square the values.
 evenWhenSquared'' :: [Int] -> [Int]
-evenWhenSquared'' = error "TODO"
+evenWhenSquared'' list = filter even (map (^(2 :: Int)) list)
+-- The type cast ruins it a bit, but this version is clean, I gotta say.
 
 evenWhenSquared''Spec :: Spec
 evenWhenSquared''Spec =
