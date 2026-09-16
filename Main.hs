@@ -540,7 +540,14 @@ fr = filter even [1,2,3,4]
 -- It takes a list of Ints, squares every Int, and keeps only those values which are even.
 -- Define and use a local function `square :: Int -> Int`
 evenWhenSquared :: [Int] -> [Int]
-evenWhenSquared = error "TODO"
+-- Yeah, I don't like local functions, so I would use a lambda here as such.
+-- evenWhenSquared list = filter even (map (\x -> x * x) list)
+-- But since we haven't gotten to them yet, I guess here's a version with a local function.
+evenWhenSquared list = filter even (map square list)
+    where
+        square :: Int -> Int 
+        square x = x * x
+-- We're approaching Java-esque levels of verbosity here ;)
 
 evenWhenSquaredSpec :: Spec
 evenWhenSquaredSpec =
@@ -550,6 +557,14 @@ evenWhenSquaredSpec =
 
 -- TODO: What is the type of the given definition `ho1`?
 -- ho1 :: TODO
+-- fst takes a tuple `(a, b)` and returns `a`.
+-- map takes a function `(a -> b)`, a list `[a]` and returns `[b]`.
+-- Since map is the leftmost function, ho1 will return the return value of map -> ho1 will return a list of b's.
+-- map takes a function; this is `fst`. It also takes a list of `a`'s. What is `a`? Since `fst` takes a tuple, `a` must be `(a, b)`.
+-- This makes the argument of `ho1` `[(a, b)]`· So the function signature should be `ho1 :: [(a, b)] -> [b]`. But this does not compile!
+-- `fst` takes the first element, in this case `a`, but `map` wants to return `b`!
+-- So we need to constrain our types: The first element must also be `b`!
+ho1 :: [(b, b)] -> [b]
 ho1 = map fst
 
 -------------------------------------------------------------------------------
