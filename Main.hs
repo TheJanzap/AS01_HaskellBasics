@@ -592,7 +592,8 @@ la3 = map (\i -> i + 1) [1,2,3]
 -- It takes a list of Ints, squares every Int, and keeps only those values which are even.
 -- Use a lambda expression to square the values.
 evenWhenSquared' :: [Int] -> [Int]
-evenWhenSquared' = error "TODO"
+evenWhenSquared' list = filter even (map (\x -> x * x) list)
+-- Much better now ^_^
 
 evenWhenSquared'Spec :: Spec
 evenWhenSquared'Spec =
