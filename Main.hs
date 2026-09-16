@@ -708,7 +708,10 @@ Step 5: Generalize and simplify.
 -- TODO: Define the function sumOfSquares:
 -- It takes a list and returns the sum of their squared elements.
 sumOfSquaresRec :: [Int] -> Int
-sumOfSquaresRec = error "TODO"
+-- Base case
+sumOfSquaresRec [] = 0
+-- Recursive case
+sumOfSquaresRec (x:rest) = x^(2 :: Int) + sumOfSquaresRec rest
 
 sumOfSquaresRecSpec :: Spec
 sumOfSquaresRecSpec =
@@ -723,7 +726,10 @@ sumOfSquaresRecSpec =
 
 -- TODO: Define the function `convertList` which takes a `List a` and converts it to a Haskell `[a]`:
 convertList :: List a -> [a]
-convertList = error "TODO"
+-- Base case
+convertList Nil = []
+-- Recursive case
+convertList (Node x rest) = x : convertList rest
 
 convertListSpec :: Spec
 convertListSpec =
