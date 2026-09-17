@@ -90,7 +90,15 @@ c2 = Blue
 
 -- TODO: Write your own enumeration type for weekdays.
 -- Make sure that the values can be printed and compared.
-data Weekday = Monday | Tuesday | Wednesday | Thursday | Friday | Saturday | Sunday deriving (Show, Eq)
+data Weekday
+    = Monday
+    | Tuesday
+    | Wednesday
+    | Thursday
+    | Friday
+    | Saturday
+    | Sunday
+    deriving (Show, Eq)
 
 -- TODO: Define a binding named `bestDay` with your value for Sunday. Give the binding a type signature.
 bestDay :: Weekday
@@ -216,8 +224,8 @@ f10 c = f c
 --- f11 :: TODO
 -- First argument `a` gets passed to f10. Its first argument is Color.
 -- f10 returns an int.
--- The next operation is a less-than, so the second argumennt `c` must also be an int.
--- less-than returns an int, which is the return value of f11
+-- The next operation is a greater-than, so the second argument `c` must also be an int.
+-- Greater-than returns a bool, which is the return value of f11
 f11 :: Color -> Int -> Bool
 f11 a c = f10 a > c
 
@@ -251,7 +259,7 @@ price (Power False) = 50
 -- s2 :: TODO
 -- First argument `a` gets passed to `price`, so `a` must be a `Part`.
 -- The second argument `b` is a `price` variant with `Power`, so `b` must be a bool.
--- Since the price constructor always returns `Int`, the addition adds two `Int`s and the return value is also `Int`.
+-- Since the price function always returns `Int`, the addition adds two `Int`s and the return value is also `Int`.
 s2:: Part -> Bool -> Int      
 s2 a b = price a + price (Power b)
 
@@ -303,10 +311,10 @@ p2 = P (Power True) Red
 -- Try: `first p2`
 -- This function is polymorphic, meaning it works for pairs with different component types.
 -- Pro: Can you give a wrong implementation that terminates?
--- Unsure about the questions phrasing. But you could write `first (P _ y) = y` to return the second element
--- instead of the first. But that is prevented by the type checker, as `y` is of type `b`, while the function
--- must return an `a`. We could also assign `error` or `undefined`, but I don't think that this is what you're
--- asking for.
+-- Unsure about the questions phrasing. But you could write `first (P _ y) = y` to return the second element instead of the first.
+-- But that is prevented by the type checker, as `y` is of type `b`, while the function must return an `a`.
+-- We could also assign `error` or `undefined`, but I don't think that this is what you're asking for.
+-- Non-terminating functions that pass type checking would be `first = first` or `first p = first p`
 first :: Pair a b -> a
 first (P x _) = x
 
@@ -331,7 +339,7 @@ p6 = snd (True,Red)
 -- p7 :: TODO
 -- The inner tuple is of type `(Color, Char)` and because `fst` returns the first element, it returns `Color`.
 -- The outer tuple now contains values of type `(Bool, Color)`, and `snd` returns the second element.
--- There are no parameters, so the function simply returns `Color`.
+-- There are no parameters, so this is not a function, but an assignment to a variable of type `Color`.
 p7 :: Color
 p7 = snd (True, fst (Red, 'X'))
 
@@ -496,7 +504,7 @@ res = add 1 2 -- actually means ((add 1) 2)
 -- TODO: What is the type of `pa1`?
 -- pa1 :: TODO
 -- f is a function that takes a `Bool`, two `Int`s and returns a `Bool`.
--- f is called with a `Bool` and a single `Int`, meaning the second `Int` needs to be provided by the argument of `pa1`.
+-- f is called with a `Bool` and a single `Int`, meaning the second `Int` needs to be provided by the argument of `pa1` -> partial application
 -- Since f returns a `Bool`, `pa1` does as well.   
 pa1 :: Int -> Bool
 pa1 = f True 1
@@ -563,8 +571,9 @@ evenWhenSquaredSpec =
 -- map takes a function; this is `fst`. It also takes a list of `a`'s. What is `a`? Since `fst` takes a tuple, `a` must be `(a, b)`.
 -- This makes the argument of `ho1` `[(a, b)]`· So the function signature should be `ho1 :: [(a, b)] -> [b]`. But this does not compile!
 -- `fst` takes the first element, in this case `a`, but `map` wants to return `b`!
--- So we need to constrain our types: The first element must also be `b`!
-ho1 :: [(b, b)] -> [b]
+-- We can simply change the first parameter to be of type `b`.
+-- Since we don't care about the second element, this can be any type we want.
+ho1 :: [(b, a)] -> [b]
 ho1 = map fst
 
 -------------------------------------------------------------------------------
