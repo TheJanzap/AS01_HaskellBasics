@@ -90,8 +90,19 @@ c2 = Blue
 
 -- TODO: Write your own enumeration type for weekdays.
 -- Make sure that the values can be printed and compared.
+data Weekday
+    = Monday
+    | Tuesday
+    | Wednesday
+    | Thursday
+    | Friday
+    | Saturday
+    | Sunday
+    deriving (Show, Eq)
 
 -- TODO: Define a binding named `bestDay` with your value for Sunday. Give the binding a type signature.
+bestDay :: Weekday
+bestDay = Sunday
 
 -------------------------------------------------------------------------------
 -- 4. Basic syntax
@@ -119,7 +130,7 @@ r2 = f2 1 2
 -- TODO: Define the function sumOfSquares:
 -- It should take two arguments and return the sum of their squares.
 sumOfSquares :: Int -> Int -> Int
-sumOfSquares = error "TODO"
+sumOfSquares a b = a * a + b * b
 
 -- This is a test which is executed by the test framework.
 sumOfSquaresSpec :: Spec
@@ -162,7 +173,7 @@ f7 Red = True
 -- And this is a partial function. Partial in that it is not defined for all values of its parameter type (also called domain).
 -- This function crashes if applied to `Red`.
 -- Partial functions are bad, because they can lead to bugs.
--- Try: `f6 Red`
+-- Try: `f8 Red`
 f8 :: Color -> Char
 f8 Green = 'g'
 f8 Blue  = 'b'
@@ -171,7 +182,9 @@ f8 Blue  = 'b'
 -- TODO: Define the function nextColor:
 -- Next of red is green, next of green is blue, next of blue is red again.
 nextColor :: Color -> Color
-nextColor = error "TODO"
+nextColor Red   = Green
+nextColor Green = Blue
+nextColor Blue  = Red
 
 -- This is a test which is executed by the test framework.
 nextColorSpec :: Spec
@@ -209,6 +222,11 @@ f10 c = f c
 
 -- TODO: Write the type of the given function `f11`:
 --- f11 :: TODO
+-- First argument `a` gets passed to f10. Its first argument is Color.
+-- f10 returns an int.
+-- The next operation is a greater-than, so the second argument `c` must also be an int.
+-- Greater-than returns a bool, which is the return value of f11
+f11 :: Color -> Int -> Bool
 f11 a c = f10 a > c
 
 
@@ -239,6 +257,10 @@ price (Power False) = 50
 
 -- TODO: Write the type of the given definition `s2`.
 -- s2 :: TODO
+-- First argument `a` gets passed to `price`, so `a` must be a `Part`.
+-- The second argument `b` is a `price` variant with `Power`, so `b` must be a bool.
+-- Since the price function always returns `Int`, the addition adds two `Int`s and the return value is also `Int`.
+s2:: Part -> Bool -> Int      
 s2 a b = price a + price (Power b)
 
 
@@ -256,7 +278,7 @@ ip = IP 5 4
 -- TODO: Define the function pairProduct:
 -- It returns the product of its components.
 pairProduct :: IPair -> Int
-pairProduct = error "TODO"
+pairProduct (IP i1 i2) = i1 * i2 
 
 pairProductSpec :: Spec
 pairProductSpec =
@@ -289,6 +311,10 @@ p2 = P (Power True) Red
 -- Try: `first p2`
 -- This function is polymorphic, meaning it works for pairs with different component types.
 -- Pro: Can you give a wrong implementation that terminates?
+-- Unsure about the questions phrasing. But you could write `first (P _ y) = y` to return the second element instead of the first.
+-- But that is prevented by the type checker, as `y` is of type `b`, while the function must return an `a`.
+-- We could also assign `error` or `undefined`, but I don't think that this is what you're asking for.
+-- Non-terminating functions that pass type checking would be `first = first` or `first p = first p`
 first :: Pair a b -> a
 first (P x _) = x
 
@@ -311,6 +337,10 @@ p6 = snd (True,Red)
 
 -- TODO: What is the type of the given definition `p7`?
 -- p7 :: TODO
+-- The inner tuple is of type `(Color, Char)` and because `fst` returns the first element, it returns `Color`.
+-- The outer tuple now contains values of type `(Bool, Color)`, and `snd` returns the second element.
+-- There are no parameters, so this is not a function, but an assignment to a variable of type `Color`.
+p7 :: Color
 p7 = snd (True, fst (Red, 'X'))
 
 
@@ -327,7 +357,8 @@ name = fstName (MkLecturer "Peter" "Meier")
 
 -- TODO: What is the type of the generated function `sndName`?
 -- You can check your answer with `:t sndName` in the repl.
-
+-- It takes in a `Lecturer` and returns its second name, which is a `String`
+-- sndName :: Lecturer -> String
 
 -------------------------------------------------------------------------------
 -- 6. Lists
@@ -365,7 +396,8 @@ e2 = firstE Nil -- Crashes!
 -- TODO: Define the function isEmpty:
 -- It returns whether the given list is empty.
 isEmpty :: List a -> Bool
-isEmpty = error "TODO"
+isEmpty Nil = True
+isEmpty (Node _ _) = False
 
 isEmptySpec :: Spec
 isEmptySpec =
@@ -420,8 +452,9 @@ getFirstTwo _         = []
 -- TODO: Define the function firstAndThird:
 -- It returns in a pair the first and third element of a list.
 -- Is a total (in contrast to partial) implementation possible?
+-- No, not with this type signature. You could wrap the tuple in `Maybe` and return `Nothing` if there are less than 3 elements in the list.
 firstAndThird :: [a] -> (a,a)
-firstAndThird = error "TODO"
+firstAndThird (a1:_:a3:_) = (a1, a3)
 
 firstAndThirdSpec :: Spec
 firstAndThirdSpec =
@@ -470,6 +503,10 @@ res = add 1 2 -- actually means ((add 1) 2)
 
 -- TODO: What is the type of `pa1`?
 -- pa1 :: TODO
+-- f is a function that takes a `Bool`, two `Int`s and returns a `Bool`.
+-- f is called with a `Bool` and a single `Int`, meaning the second `Int` needs to be provided by the argument of `pa1` -> partial application
+-- Since f returns a `Bool`, `pa1` does as well.   
+pa1 :: Int -> Bool
 pa1 = f True 1
   where f :: Bool -> Int -> Int -> Bool
         f _ _ _ = True
@@ -511,7 +548,14 @@ fr = filter even [1,2,3,4]
 -- It takes a list of Ints, squares every Int, and keeps only those values which are even.
 -- Define and use a local function `square :: Int -> Int`
 evenWhenSquared :: [Int] -> [Int]
-evenWhenSquared = error "TODO"
+-- Yeah, I don't like local functions, so I would use a lambda here as such.
+-- evenWhenSquared list = filter even (map (\x -> x * x) list)
+-- But since we haven't gotten to them yet, I guess here's a version with a local function.
+evenWhenSquared list = filter even (map square list)
+    where
+        square :: Int -> Int 
+        square x = x * x
+-- We're approaching Java-esque levels of verbosity here ;)
 
 evenWhenSquaredSpec :: Spec
 evenWhenSquaredSpec =
@@ -521,6 +565,15 @@ evenWhenSquaredSpec =
 
 -- TODO: What is the type of the given definition `ho1`?
 -- ho1 :: TODO
+-- fst takes a tuple `(a, b)` and returns `a`.
+-- map takes a function `(a -> b)`, a list `[a]` and returns `[b]`.
+-- Since map is the leftmost function, ho1 will return the return value of map -> ho1 will return a list of b's.
+-- map takes a function; this is `fst`. It also takes a list of `a`'s. What is `a`? Since `fst` takes a tuple, `a` must be `(a, b)`.
+-- This makes the argument of `ho1` `[(a, b)]`· So the function signature should be `ho1 :: [(a, b)] -> [b]`. But this does not compile!
+-- `fst` takes the first element, in this case `a`, but `map` wants to return `b`!
+-- We can simply change the first parameter to be of type `b`.
+-- Since we don't care about the second element, this can be any type we want.
+ho1 :: [(b, a)] -> [b]
 ho1 = map fst
 
 -------------------------------------------------------------------------------
@@ -548,7 +601,8 @@ la3 = map (\i -> i + 1) [1,2,3]
 -- It takes a list of Ints, squares every Int, and keeps only those values which are even.
 -- Use a lambda expression to square the values.
 evenWhenSquared' :: [Int] -> [Int]
-evenWhenSquared' = error "TODO"
+evenWhenSquared' list = filter even (map (\x -> x * x) list)
+-- Much better now ^_^
 
 evenWhenSquared'Spec :: Spec
 evenWhenSquared'Spec =
@@ -599,7 +653,8 @@ o6 = 3 `mul` 4
 -- It takes a list of Ints, squares every Int, and keeps only those values which are even.
 -- Use a `^` operator section to square the values.
 evenWhenSquared'' :: [Int] -> [Int]
-evenWhenSquared'' = error "TODO"
+evenWhenSquared'' list = filter even (map (^(2 :: Int)) list)
+-- The type cast ruins it a bit, but this version is clean, I gotta say.
 
 evenWhenSquared''Spec :: Spec
 evenWhenSquared''Spec =
@@ -662,7 +717,10 @@ Step 5: Generalize and simplify.
 -- TODO: Define the function sumOfSquares:
 -- It takes a list and returns the sum of their squared elements.
 sumOfSquaresRec :: [Int] -> Int
-sumOfSquaresRec = error "TODO"
+-- Base case
+sumOfSquaresRec [] = 0
+-- Recursive case
+sumOfSquaresRec (x:rest) = x^(2 :: Int) + sumOfSquaresRec rest
 
 sumOfSquaresRecSpec :: Spec
 sumOfSquaresRecSpec =
@@ -677,7 +735,10 @@ sumOfSquaresRecSpec =
 
 -- TODO: Define the function `convertList` which takes a `List a` and converts it to a Haskell `[a]`:
 convertList :: List a -> [a]
-convertList = error "TODO"
+-- Base case
+convertList Nil = []
+-- Recursive case
+convertList (Node x rest) = x : convertList rest
 
 convertListSpec :: Spec
 convertListSpec =
